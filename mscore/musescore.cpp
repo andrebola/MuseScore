@@ -4743,7 +4743,7 @@ int main(int argc, char* av[])
                   parser.showHelp(EXIT_FAILURE);
             preferences.midiImportOperations.setOperationsFile(temp);
             }
-      autobeam = parser.isSet("a");
+      autobeam = parser.isSet("b");
       noWebView = parser.isSet("w");
       exportScoreParts = parser.isSet("export-score-parts");
       if (exportScoreParts && !converterMode)
