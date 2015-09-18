@@ -135,6 +135,8 @@ int trimMargin = -1;
 bool noWebView = false;
 bool exportScoreParts = false;
 
+bool autobeam = false;
+
 QString mscoreGlobalShare;
 
 static QString outFileName;
@@ -4659,6 +4661,7 @@ int main(int argc, char* av[])
       parser.addOption(QCommandLineOption({"t", "test-mode"}, "Set testMode flag for all files"));
       parser.addOption(QCommandLineOption({"M", "midi-operations"}, "Specify MIDI import operations file", "file"));
       parser.addOption(QCommandLineOption({"w", "no-webview"}, "No web view in start center"));
+      parser.addOption(QCommandLineOption({"b", "auto-beam"}, "Enable Auto beaming for command line operations"));
       parser.addOption(QCommandLineOption({"P", "export-score-parts"}, "used with -o <file>.pdf, export score + parts"));
 
       parser.addPositionalArgument("scorefiles", "The files to open", "[scorefile...]");
@@ -4740,6 +4743,7 @@ int main(int argc, char* av[])
                   parser.showHelp(EXIT_FAILURE);
             preferences.midiImportOperations.setOperationsFile(temp);
             }
+      autobeam = parser.isSet("a");
       noWebView = parser.isSet("w");
       exportScoreParts = parser.isSet("export-score-parts");
       if (exportScoreParts && !converterMode)
