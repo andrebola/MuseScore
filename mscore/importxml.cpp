@@ -5428,10 +5428,7 @@ Note* MusicXml::xmlNote(Measure* measure, int staff, const QString& partId, Beam
 
       bool rest    = false;
       int relStaff = 0;
-      Beam::Mode bm  = Beam::Mode::AUTO;
-      if (!autobeam){
-          bm  = Beam::Mode::NONE;
-      }
+      Beam::Mode bm  = Beam::Mode::NONE;
       MScore::Direction sd = MScore::Direction::AUTO;
       bool grace   = false;
       QString graceSlash;

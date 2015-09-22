@@ -1831,8 +1831,12 @@ static Measure* findMeasure(Score* score, const int tick)
 
 static void removeBeam(Beam*& beam)
       {
+      Beam::Mode bm  = Beam::Mode::AUTO;
+      if (!autobeam){
+          bm  = Beam::Mode::NONE;
+      }
       for (int i = 0; i < beam->elements().size(); ++i)
-            beam->elements().at(i)->setBeamMode(Beam::Mode::NONE);
+            beam->elements().at(i)->setBeamMode(bm);
       delete beam;
       beam = 0;
       }
@@ -1876,7 +1880,12 @@ static void handleBeamAndStemDir(ChordRest* cr, const Beam::Mode bm, const MScor
       // if no beam, set stem direction on chord itself
       if (!beam) {
             static_cast<Chord*>(cr)->setStemDirection(sd);
-            cr->setBeamMode(Beam::Mode::NONE);
+            if (!autobeam){
+                cr->setBeamMode(Beam::Mode::NONE);
+            }
+            else{
+                cr->setBeamMode(Beam::Mode::AUTO);
+            }
             }
       // terminate the currect beam and add to the score
       if (beam && bm == Beam::Mode::END)
@@ -4010,7 +4019,10 @@ Note* MusicXMLParserPass2::note(const QString& partId,
       bool graceSlash = false;
       bool printObject = _e.attributes().value("print-object") != "no";
       TDuration normalType;
-      Beam::Mode bm  = Beam::Mode::NONE;
+      Beam::Mode bm  = Beam::Mode::AUTO;
+      if (!autobeam){
+          bm  = Beam::Mode::NONE;
+      }
       int displayStep = -1;       // invalid
       int displayOctave = -1; // invalid
       bool unpitched = false;
@@ -4226,7 +4238,15 @@ Note* MusicXMLParserPass2::note(const QString& partId,
                               removeBeam(currBeam);
                         }
                   else
+                  {
+                  if (!autobeam){ 
                         cr->setBeamMode(Beam::Mode::NONE);
+                  }
+                  else
+                  {
+                        cr->setBeamMode(Beam::Mode::AUTO);
+                  }
+                  }
                   cr->setSmall(small);
                   cr->setVisible(printObject);
                   handleDisplayStep(cr, displayStep, displayOctave, noteStartTime.ticks(), _score->spatium());
